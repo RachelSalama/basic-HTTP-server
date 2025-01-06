@@ -1,10 +1,11 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as http from 'http';
+
 const textFilePath: string = path.join(__dirname, '/../assets/content.txt');
 const packageJsonPath: string = path.join(__dirname, '/../../package.json');
 
-export function getContent(req: http.IncomingMessage, res: http.ServerResponse) {
+export function getContentFromFile(req: http.IncomingMessage, res: http.ServerResponse) {
     fs.readFile(textFilePath, 'utf8', (err, data) => {
         if (err) {
             res.statusCode = 500;
@@ -17,7 +18,7 @@ export function getContent(req: http.IncomingMessage, res: http.ServerResponse) 
     });
 }
 
-export function getUpdateTime(req: http.IncomingMessage, res: http.ServerResponse) {
+export function getPackageJsonUpdateTime(req: http.IncomingMessage, res: http.ServerResponse) {
     new Promise<Date>((resolve, reject) => {
         fs.stat(packageJsonPath, (err, stats) => {
             if (err) {
