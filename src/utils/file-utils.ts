@@ -1,12 +1,12 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import * as http from 'http';
+import { readFile, stat } from 'fs';
+import { join } from 'path';
+import {IncomingMessage, ServerResponse} from 'http';
 
-const textFilePath: string = path.join(__dirname, '/../assets/content.txt');
-const packageJsonPath: string = path.join(__dirname, '/../../package.json');
+const textFilePath: string = join(__dirname, '/../assets/content.txt');
+const packageJsonPath: string = join(__dirname, '/../../package.json');
 
-export function getContentFromFile(req: http.IncomingMessage, res: http.ServerResponse) {
-    fs.readFile(textFilePath, 'utf8', (err, data) => {
+export function getContentFromFile(req: IncomingMessage, res: ServerResponse) {
+    readFile(textFilePath, 'utf8', (err, data) => {
         if (err) {
             res.statusCode = 500;
             res.end('Error reading the text file');
@@ -18,9 +18,9 @@ export function getContentFromFile(req: http.IncomingMessage, res: http.ServerRe
     });
 }
 
-export function getPackageJsonUpdateTime(req: http.IncomingMessage, res: http.ServerResponse) {
+export function getPackageJsonUpdateTime(req: IncomingMessage, res: ServerResponse) {
     new Promise<Date>((resolve, reject) => {
-        fs.stat(packageJsonPath, (err, stats) => {
+        stat(packageJsonPath, (err, stats) => {
             if (err) {
                 reject(packageJsonPath);
                 return;
