@@ -1,13 +1,16 @@
 {
-  "name": "${PROJECT_NAME}",
+  "name": "http-server",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "src/main.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "start": "nodemon"
   },
-  "dependencies": {},
   "devDependencies": {
+    "nodemon": "^3.1.9",
+    "@types/node": "^22.10.3",
+    "ts-node": "^10.9.2",
     "typescript": "^5.5.3"
   },
   "private": true
