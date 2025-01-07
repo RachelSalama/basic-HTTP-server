@@ -1,11 +1,8 @@
 import { readFile, stat } from 'fs';
-import { join } from 'path';
 import {IncomingMessage, ServerResponse} from 'http';
+import {packageJsonPath, textFilePath} from "../main";
 
-const textFilePath: string = join(__dirname, '/../assets/content.txt');
-const packageJsonPath: string = join(__dirname, '/../../package.json');
-
-export function getContentFromFile(req: IncomingMessage, res: ServerResponse) {
+export const getContentFromFile = (req: IncomingMessage, res: ServerResponse) => {
     readFile(textFilePath, 'utf8', (err, data) => {
         if (err) {
             res.statusCode = 500;
@@ -18,20 +15,20 @@ export function getContentFromFile(req: IncomingMessage, res: ServerResponse) {
     });
 }
 
-export function getPackageJsonUpdateTime(req: IncomingMessage, res: ServerResponse) {
-    new Promise<Date>((resolve, reject) => {
+export const getPackageJsonUpdateTime = (req: IncomingMessage, res: ServerResponse) => {
+    new Promise<string>((resolve, reject) => {
         stat(packageJsonPath, (err, stats) => {
             if (err) {
                 reject(packageJsonPath);
                 return;
             }
-            resolve(stats.mtime);
+            resolve(stats.mtime.toISOString());
         });
     })
         .then((mtime) => {
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify({ lastUpdate: mtime.toISOString() }));
+            res.end(JSON.stringify({ lastUpdate: mtime }));
         })
         .catch((error) => {
             res.statusCode = 500;
